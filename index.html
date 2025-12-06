@@ -1,186 +1,1025 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MEDIR</title>
-  <meta name="description" content="Personal site & links by Medir Ali">
-  <style>
-    /* Reset */
-    * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+  <title>Mεd¡r | Web3 Enthusiast & Blockchain Explorer</title>
+  <meta name="description" content="Web3 Developer exploring decentralized applications, smart contracts, and blockchain technologies.">
+  <meta name="keywords" content="Web3, Blockchain, Developer, Crypto, Smart Contracts">
+  <meta property="og:image" content="https://i.postimg.cc/kB3MkvK8/1764080747486-2.jpg">
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
-    /* Body & background */
-    body {
-      background: #0f0f0f;
-      color: #f0f0f0;
-      overflow-x: hidden;
+  <style>
+    /* --- CSS Variables with Dark/Light Theme Support --- */
+    :root {
+      --bg: #050505;
+      --surface: #0a0a0a;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.15);
+      --primary: #00f2ff;
+      --primary-glow: rgba(0, 242, 255, 0.15);
+      --secondary: #bd00ff;
+      --accent: #00ff88;
+      --text-main: #ffffff;
+      --text-secondary: #e4e4e7;
+      --text-muted: #a1a1aa;
+      --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+      --shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --radius: 16px;
+      --radius-sm: 8px;
     }
 
-    /* Tech animated background */
-    .background {
+    [data-theme="light"] {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --card-bg: rgba(0, 0, 0, 0.02);
+      --border: rgba(0, 0, 0, 0.08);
+      --border-hover: rgba(0, 0, 0, 0.15);
+      --text-main: #1a1a1a;
+      --text-secondary: #3f3f46;
+      --text-muted: #71717a;
+    }
+
+    /* --- Reset & Base Styles --- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      transition: var(--transition);
+    }
+
+    /* --- Custom Cursor (Only on Desktop) --- */
+    .cursor-dot, .cursor-outline {
       position: fixed;
-      top:0; left:0; width:100%; height:100%;
-      background: linear-gradient(45deg, #0f0f0f, #111);
-      z-index:0;
+      top: 0;
+      left: 0;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    body.cursor-active .cursor-dot,
+    body.cursor-active .cursor-outline {
+      opacity: 1;
+    }
+    
+    .cursor-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--primary);
+      filter: drop-shadow(0 0 8px var(--primary));
+    }
+    
+    .cursor-outline {
+      width: 32px;
+      height: 32px;
+      border: 2px solid var(--primary);
+      transition: width 0.2s ease, height 0.2s ease, opacity 0.3s ease;
+    }
+    
+    .cursor-click {
+      animation: cursorClick 0.3s ease;
+    }
+    
+    @keyframes cursorClick {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(0.8); }
+    }
+
+    /* --- Theme Toggle --- */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 100;
+      transition: var(--transition);
+    }
+    
+    .theme-toggle:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-2px);
+    }
+    
+    .theme-toggle i {
+      font-size: 1.2rem;
+    }
+
+    /* --- Container --- */
+    .container {
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* --- Profile Section --- */
+    .profile-section {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .profile-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+    }
+
+    .profile-pic {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid transparent;
+      background: linear-gradient(var(--bg), var(--bg)) padding-box,
+                  var(--gradient) border-box;
+      box-shadow: 0 0 40px var(--primary-glow);
+      transition: var(--transition);
+    }
+
+    .profile-pic:hover {
+      transform: scale(1.05) rotate(5deg);
+      box-shadow: 0 0 60px var(--primary-glow);
+    }
+
+    /* --- Glitch Name Effect --- */
+    .glitch-container {
+      position: relative;
+      margin-bottom: 0.5rem;
+    }
+
+    .glitch {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 700;
+      position: relative;
+      color: var(--text-main);
+      display: inline-block;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+    }
+
+    .glitch::before {
+      left: 2px;
+      text-shadow: -2px 0 var(--primary);
+      animation: glitch-1 2s infinite linear alternate-reverse;
+    }
+
+    .glitch::after {
+      left: -2px;
+      text-shadow: -2px 0 var(--secondary);
+      animation: glitch-2 3s infinite linear alternate-reverse;
+    }
+
+    @keyframes glitch-1 {
+      0% { clip-path: inset(20% 0 80% 0); }
+      20% { clip-path: inset(60% 0 40% 0); }
+      40% { clip-path: inset(30% 0 70% 0); }
+      60% { clip-path: inset(80% 0 20% 0); }
+      80% { clip-path: inset(10% 0 90% 0); }
+      100% { clip-path: inset(40% 0 60% 0); }
+    }
+
+    @keyframes glitch-2 {
+      0% { clip-path: inset(80% 0 20% 0); }
+      20% { clip-path: inset(10% 0 90% 0); }
+      40% { clip-path: inset(50% 0 50% 0); }
+      60% { clip-path: inset(20% 0 80% 0); }
+      80% { clip-path: inset(70% 0 30% 0); }
+      100% { clip-path: inset(30% 0 70% 0); }
+    }
+
+    /* --- Typing Effect --- */
+    .typing-container {
+      height: 1.5em;
+      margin: 1rem 0 2rem;
+    }
+
+    #typing {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      color: var(--primary);
+      display: inline;
+      position: relative;
+    }
+
+    #typing::after {
+      content: '|';
+      position: absolute;
+      right: -8px;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* --- Social Grid --- */
+    .social-grid {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-bottom: 3rem;
+    }
+
+    .social-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: var(--radius-sm);
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      text-decoration: none;
+      transition: var(--transition);
+      position: relative;
       overflow: hidden;
     }
-    .background span {
+
+    .social-icon::before {
+      content: '';
       position: absolute;
-      display: block;
-      width: 2px;
-      height: 80px;
-      background: rgba(0,224,255,0.2);
-      animation: animate 10s linear infinite;
-    }
-    @keyframes animate {
-      0% { transform: translateY(-100%) }
-      100% { transform: translateY(100vh) }
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--gradient);
+      transition: left 0.3s ease;
+      z-index: 0;
     }
 
-    /* Container */
-    .container {
+    .social-icon i {
       position: relative;
-      z-index:1;
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 2rem;
-      text-align: center;
+      z-index: 1;
     }
 
-    /* Header / Profile */
-    .profile-pic {
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      border: 4px solid #00e0ff;
-      object-fit: cover;
+    .social-icon:hover {
+      transform: translateY(-5px);
+      border-color: transparent;
+      color: white;
+    }
+
+    .social-icon:hover::before {
+      left: 0;
+    }
+
+    /* --- Cards --- */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.8rem;
+      margin-bottom: 1.5rem;
+      backdrop-filter: blur(10px);
+      transition: var(--transition);
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-5px);
+      box-shadow: var(--shadow);
+    }
+
+    .card h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.3rem;
+      color: var(--text-main);
       margin-bottom: 1rem;
-      transition: transform 0.3s ease;
-    }
-    .profile-pic:hover { transform: scale(1.05); }
-
-    h1 {
-      font-size: 3rem;
-      color: #00e0ff;
-      margin-bottom: 0.5rem;
-      text-shadow: 0 0 10px #00e0ff, 0 0 20px #00b8cc;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    p.bio {
-      font-size: 1.2rem;
-      color: #aaa;
-      margin-bottom: 2rem;
-      line-height: 1.6;
+    .card h2 i {
+      color: var(--primary);
+      font-size: 1.1rem;
     }
 
-    /* Social Links */
-    .links {
-      display:flex;
-      flex-wrap:wrap;
-      justify-content:center;
-      gap:1rem;
-      margin-bottom:3rem;
-    }
-    .links a {
-      padding: 0.8rem 2rem;
-      border-radius:12px;
-      text-decoration:none;
-      color: #0f0f0f;
-      background: linear-gradient(135deg, #00e0ff, #00b8cc);
-      font-weight:600;
-      transition:0.3s;
-    }
-    .links a:hover {
-      background: linear-gradient(135deg, #00b8cc, #008899);
-      transform: translateY(-3px);
+    .card p {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 1rem;
     }
 
-    /* Sections */
-    section {
-      padding: 4rem 2rem;
+    /* --- Wallet Section --- */
+    .wallet-section {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .wallet-addresses {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .wallet-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: var(--transition);
+      cursor: pointer;
       text-align: left;
     }
-    section h2 {
-      font-size:2rem;
-      color:#00e0ff;
-      margin-bottom:1rem;
-      border-bottom: 2px solid #00e0ff;
+
+    .wallet-btn:hover {
+      border-color: var(--primary);
+      background: rgba(0, 242, 255, 0.05);
+      transform: translateX(5px);
+    }
+
+    .wallet-btn i {
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+
+    .wallet-btn:hover i {
+      color: var(--primary);
+    }
+
+    .chain-badge {
       display: inline-block;
-      padding-bottom: 5px;
-    }
-    section p {
-      color:#ccc;
-      line-height:1.6;
-      margin-bottom:1rem;
+      padding: 0.2rem 0.6rem;
+      background: var(--primary-glow);
+      color: var(--primary);
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-left: 0.5rem;
     }
 
-    /* Contact */
-    .contact a {
-      display:inline-block;
-      margin-top:1rem;
-      padding:0.8rem 2rem;
-      border-radius:12px;
-      text-decoration:none;
-      color:#0f0f0f;
-      background: linear-gradient(135deg, #00e0ff, #00b8cc);
-      transition:0.3s;
+    /* --- Skills Tags --- */
+    .skills-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
     }
-    .contact a:hover { background: linear-gradient(135deg, #00b8cc, #008899); }
 
-    /* Responsive */
-    @media(max-width:500px){
-      h1{ font-size:2rem; }
-      .profile-pic{ width:140px; height:140px; }
-      section h2{ font-size:1.5rem; }
+    .skill-tag {
+      background: rgba(0, 242, 255, 0.1);
+      color: var(--primary);
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      border: 1px solid transparent;
+      transition: var(--transition);
+    }
+
+    .skill-tag:hover {
+      background: rgba(0, 242, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    /* --- Toast Notification --- */
+    #toast {
+      position: fixed;
+      bottom: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--surface);
+      color: var(--text-main);
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--border);
+      transition: bottom 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    #toast.show {
+      bottom: 30px;
+    }
+
+    #toast i {
+      color: var(--primary);
+      font-size: 1.2rem;
+    }
+
+    /* --- Footer --- */
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* --- Background Effect --- */
+    .gradient-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 50%, rgba(0, 242, 255, 0.05) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 20%, rgba(189, 0, 255, 0.05) 0%, transparent 50%);
+      z-index: -1;
+    }
+
+    /* --- Responsive Design --- */
+    @media (max-width: 768px) {
+      .container {
+        padding: 1.5rem 1rem;
+      }
+      
+      .social-grid {
+        gap: 0.6rem;
+      }
+      
+      .social-icon {
+        width: 45px;
+        height: 45px;
+      }
+      
+      .wallet-addresses {
+        grid-template-columns: 1fr;
+      }
+      
+      .cursor-dot,
+      .cursor-outline {
+        display: none;
+      }
+      
+      * {
+        cursor: auto !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .profile-pic {
+        width: 140px;
+        height: 140px;
+      }
+      
+      .card {
+        padding: 1.5rem;
+      }
+    }
+
+    /* --- Animation Classes --- */
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .animate-on-scroll.animate {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* --- Loading Animation --- */
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
-  <!-- Animated background -->
-  <div class="background">
-    <span style="left:10%; animation-duration:12s;"></span>
-    <span style="left:25%; animation-duration:9s;"></span>
-    <span style="left:40%; animation-duration:11s;"></span>
-    <span style="left:55%; animation-duration:10s;"></span>
-    <span style="left:70%; animation-duration:13s;"></span>
-    <span style="left:85%; animation-duration:8s;"></span>
+
+  <!-- Loading Screen -->
+  <div class="loader" id="loader">
+    <div class="loader-spinner"></div>
   </div>
 
+  <!-- Custom Cursor -->
+  <div class="cursor-dot"></div>
+  <div class="cursor-outline"></div>
+
+  <!-- Theme Toggle -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <!-- Background Gradient -->
+  <div class="gradient-bg"></div>
+
   <div class="container">
-    <!-- Header -->
-    <img src="https://i.postimg.cc/kB3MkvK8/1764080747486-2.jpg" alt="Medir Ali" class="profile-pic">
-    <h1>MEDIR</h1>
-    <p class="bio">
-      Just a guy who loves Web3, airdrops, communities, and learning new things online.
-    </p>
-
-    <!-- Social Links -->
-    <div class="links">
-      <a href="https://x.com/0xkey_wrld" target="_blank">Twitter</a>
-      <a href="https://www.youtube.com/@web3-wrld" target="_blank">YouTube</a>
-      <a href="https://t.me/Knumb2" target="_blank">Telegram</a>
-      <a href="https://www.linkedin.com/in/medir-ali" target="_blank">LinkedIn</a>
-      <a href="https://github.com/0xmedir" target="_blank">GitHub</a>
-    </div>
-
-    <!-- About Section -->
-    <section id="about">
-      <h2>About Me</h2>
-      <p>
-        I’m Medir. I enjoy discovering new projects, building my online presence, and improving step by step. I focus on Web3 learning, exploring tools, and staying active in communities.
-      </p>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact">
-      <h2>Contact</h2>
-      <p>Feel free to reach out to me for collaborations or project inquiries.</p>
-      <div class="contact">
-        <a href="mailto:medirs.a.k@gmail.com">Email Me</a>
+    <!-- Profile Section -->
+    <section class="profile-section">
+      <div class="profile-wrapper">
+        <img src="https://i.postimg.cc/kB3MkvK8/1764080747486-2.jpg" 
+             alt="Medir" 
+             class="profile-pic"
+             loading="lazy">
+      </div>
+      
+      <div class="glitch-container">
+        <h1 class="glitch" data-text="Mεd¡r">Mεd¡r</h1>
+      </div>
+      
+      <div class="typing-container">
+        <span id="typing"></span>
+      </div>
+      
+      <div class="social-grid">
+        <a href="https://x.com/0xkey_wrld" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Twitter">
+          <i class="fab fa-x-twitter"></i>
+        </a>
+        <a href="https://github.com/0xmedir" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="GitHub">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href="https://t.me/Knumb2" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Telegram">
+          <i class="fab fa-telegram"></i>
+        </a>
+        <a href="https://www.youtube.com/@web3-wrld" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="YouTube">
+          <i class="fab fa-youtube"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/medir-ali" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="LinkedIn">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+        <a href="mailto: medir9721@gmail.com" class="social-icon" aria-label="Email">
+          <i class="fas fa-envelope"></i>
+        </a>
       </div>
     </section>
 
-    <!-- Footer -->
-    <footer style="text-align:center; padding:2rem 1rem; border-top:1px solid #00e0ff; margin-top:2rem; color:#aaa;">
-      <p>Mεd¡r⌁© 2025</p>
+    <!-- About Card -->
+    <section class="card animate-on-scroll" id="aboutCard">
+      <h2><i class="fas fa-terminal"></i> About Me</h2>
+      <p>
+        Web3 Developer & Blockchain Enthusiast building the future of decentralized applications. 
+        Specializing in smart contract development, DeFi protocols, and full-stack dApps.
+      </p>
+      <p>
+        Currently focused on exploring Layer 2 solutions, zero-knowledge proofs, and contributing 
+        to open-source Web3 projects.
+      </p>
+      <div class="skills-tags">
+        <span class="skill-tag">Solidity</span>
+      
+        <span class="skill-tag">Smart Contracts</span>
+        <span class="skill-tag">Web3.js</span>
+        <span class="skill-tag">React</span>
+        <span class="skill-tag">Node.js</span>
+        <span class="skill-tag">Hardhat</span>
+        <span class="skill-tag">IPFS</span>
+      </div>
+    </section>
+
+    <!-- Projects/Experience Card -->
+    <section class="card animate-on-scroll" id="projectsCard">
+      <h2><i class="fas fa-code-branch"></i> Projects & Experience</h2>
+      <p>
+        <strong>DeFi Yield Optimizer</strong> – Developed a yield farming aggregator with auto-compounding features.
+      </p>
+      <p>
+        <strong>NFT Marketplace</strong> – Built a gas-efficient NFT marketplace with lazy minting capabilities.
+      </p>
+      <p>
+        <strong>Cross-chain Bridge</strong> – Contributed to a cross-chain asset bridge supporting multiple networks.
+      </p>
+      <div class="skills-tags">
+        <span class="skill-tag">Full-Stack</span>
+        <span class="skill-tag">DeFi</span>
+        <span class="skill-tag">NFT</span>
+        <span class="skill-tag">Cross-chain</span>
+      </div>
+    </section>
+
+    <!-- Wallet Section -->
+    <section class="card animate-on-scroll" id="walletCard">
+      <h2><i class="fas fa-wallet"></i> Support & Donations</h2>
+      <p>Support my open-source work and research. Any contribution helps!</p>
+      
+      <div class="wallet-section">
+        <div class="wallet-addresses">
+          <button class="wallet-btn" onclick="copyAddress(this, '0x38f69fc75990ec09399bd5dbad56f178d7d64ff7')">
+            <div>
+              <i class="fab fa-ethereum"></i>
+              EVM
+              <span class="chain-badge">eth, bsc, pol</span>
+            </div>
+            <i class="far fa-copy"></i>
+          </button>
+          
+          <button class="wallet-btn" onclick="copyAddress(this, 'FA7ekXpRi2DkELPgweA21zxSaYFqMJj3uMCYh2j8NVRk')">
+            <div>
+              <i class="fas fa-sun"></i>
+              Solana
+              <span class="chain-badge">SOL</span>
+            </div>
+            <i class="far fa-copy"></i>
+          </button>
+        </div>
+        
+        <p style="font-size: 0.8rem; color: var(--text-muted);">
+          <i class="fas fa-info-circle"></i>
+          Click any address to copy!
+        </p>
+      </div>
+    </section>
+    <footer>
+      <p>    © 2025 Medir | All contributions are open source.</p>
+      <p style="margin-top: 0.5rem; font-size: 0.8rem;">
+        Built with ❤️ for the Web3 community
+      </p>
     </footer>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toast-message">Address copied!</span>
+  </div>
+
+  <script>
+    // ========== INITIALIZATION ==========
+    document.addEventListener('DOMContentLoaded', () => {
+      // Hide loader
+      setTimeout(() => {
+        document.getElementById('loader').classList.add('hidden');
+      }, 800);
+
+      // Initialize all features
+      initCursor();
+      initTypingEffect();
+      initThemeToggle();
+      initScrollAnimations();
+      initCardHoverEffects();
+    });
+
+    // ========== CUSTOM CURSOR ==========
+    function initCursor() {
+      const cursorDot = document.querySelector('.cursor-dot');
+      const cursorOutline = document.querySelector('.cursor-outline');
+      
+      // Only enable cursor on desktop
+      if (window.innerWidth > 768) {
+        document.body.classList.add('cursor-active');
+        
+        let mouseX = 0, mouseY = 0;
+        let outlineX = 0, outlineY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+          cursorDot.style.left = `${mouseX}px`;
+          cursorDot.style.top = `${mouseY}px`;
+        });
+        
+        // Smooth cursor outline animation
+        function animateOutline() {
+          outlineX += (mouseX - outlineX) * 0.1;
+          outlineY += (mouseY - outlineY) * 0.1;
+          cursorOutline.style.left = `${outlineX}px`;
+          cursorOutline.style.top = `${outlineY}px`;
+          requestAnimationFrame(animateOutline);
+        }
+        animateOutline();
+        
+        // Click animation
+        document.addEventListener('mousedown', () => {
+          cursorOutline.classList.add('cursor-click');
+          cursorOutline.style.width = '20px';
+          cursorOutline.style.height = '20px';
+        });
+        
+        document.addEventListener('mouseup', () => {
+          cursorOutline.classList.remove('cursor-click');
+          cursorOutline.style.width = '32px';
+          cursorOutline.style.height = '32px';
+        });
+        
+        // Interactive elements hover effect
+        const interactiveElements = document.querySelectorAll('a, button, .social-icon, .wallet-btn');
+        interactiveElements.forEach(el => {
+          el.addEventListener('mouseenter', () => {
+            cursorOutline.style.width = '50px';
+            cursorOutline.style.height = '50px';
+            cursorOutline.style.borderColor = 'var(--primary)';
+            cursorOutline.style.opacity = '0.8';
+          });
+          
+          el.addEventListener('mouseleave', () => {
+            cursorOutline.style.width = '32px';
+            cursorOutline.style.height = '32px';
+            cursorOutline.style.borderColor = 'var(--primary)';
+            cursorOutline.style.opacity = '1';
+          });
+        });
+      }
+    }
+
+    // ========== TYPING EFFECT ==========
+    function initTypingEffect() {
+      const typingElement = document.getElementById('typing');
+      const phrases = [
+        'College Student',
+        'Web3 Explorer',
+        'Smart Contract Scanner',
+        'Blockchain Researcher',
+        'DeFi Enthusiast',
+        'Open Source Contributor',
+      ];
+      
+      let phraseIndex = 0;
+      let charIndex = 0;
+      let isDeleting = false;
+      let isPaused = false;
+      
+      function type() {
+        if (isPaused) return;
+        
+        const currentPhrase = phrases[phraseIndex];
+        
+        if (isDeleting) {
+          typingElement.textContent = currentPhrase.substring(0, charIndex - 1);
+          charIndex--;
+        } else {
+          typingElement.textContent = currentPhrase.substring(0, charIndex + 1);
+          charIndex++;
+        }
+        
+        let typeSpeed = 100;
+        
+        if (isDeleting) {
+          typeSpeed = 50;
+        }
+        
+        if (!isDeleting && charIndex === currentPhrase.length) {
+          isPaused = true;
+          setTimeout(() => {
+            isPaused = false;
+            isDeleting = true;
+            type();
+          }, 1500);
+          return;
+        }
+        
+        if (isDeleting && charIndex === 0) {
+          isDeleting = false;
+          phraseIndex = (phraseIndex + 1) % phrases.length;
+          typeSpeed = 500;
+        }
+        
+        setTimeout(type, typeSpeed);
+      }
+      
+      // Start typing after a delay
+      setTimeout(type, 1000);
+    }
+
+    // ========== THEME TOGGLE ==========
+    function initThemeToggle() {
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcon = themeToggle.querySelector('i');
+      
+      // Load saved theme
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeIcon(savedTheme);
+      
+      themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeIcon(newTheme);
+        // Add animation
+        themeToggle.style.transform = 'scale(0.9)';
+        setTimeout(() => {
+          themeToggle.style.transform = 'scale(1)';
+        }, 150);
+      });
+      
+      function updateThemeIcon(theme) {
+        if (theme === 'dark') {
+          themeIcon.classList.remove('fa-sun');
+          themeIcon.classList.add('fa-moon');
+        } else {
+          themeIcon.classList.remove('fa-moon');
+          themeIcon.classList.add('fa-sun');
+        }
+      }
+    }
+
+    // ========== SCROLL ANIMATIONS ==========
+    function initScrollAnimations() {
+      const animatedElements = document.querySelectorAll('.animate-on-scroll');
+      
+      function checkScroll() {
+        animatedElements.forEach(el => {
+          const rect = el.getBoundingClientRect();
+          const isVisible = (rect.top <= window.innerHeight * 0.85 && rect.bottom >= 0);
+          
+          if (isVisible) {
+            el.classList.add('animate');
+          }
+        });
+      }
+      
+      // Initial check
+      checkScroll();
+      
+      // Check on scroll
+      window.addEventListener('scroll', checkScroll);
+    }
+
+    // ========== CARD HOVER EFFECTS ==========
+    function initCardHoverEffects() {
+      const cards = document.querySelectorAll('.card');
+      
+      cards.forEach(card => {
+        card.addEventListener('mouseenter', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          card.style.setProperty('--mouse-x', `${x}px`);
+          card.style.setProperty('--mouse-y', `${y}px`);
+        });
+      });
+    }
+
+    // ========== COPY ADDRESS FUNCTION ==========
+    async function copyAddress(button, address) {
+      try {
+        await navigator.clipboard.writeText(address);
+        
+        // Show toast
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+        toastMessage.textContent = `${getNetworkName(address)} address copied!`;
+        
+        toast.classList.add('show');
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 3000);
+        
+        // Button feedback
+        const originalHTML = button.innerHTML;
+        button.innerHTML = originalHTML.replace('far fa-copy', 'fas fa-check');
+        button.style.borderColor = 'var(--primary)';
+        button.style.color = 'var(--primary)';
+        
+        setTimeout(() => {
+          button.innerHTML = originalHTML;
+          button.style.borderColor = '';
+          button.style.color = '';
+        }, 2000);
+        
+      } catch (err) {
+        console.error('Failed to copy:', err);
+        showToast('Failed to copy address', 'error');
+      }
+    }
+    
+    function getNetworkName(address) {
+      if (address.includes('0x')) return 'EVM';
+      if (address.length > 40) return 'Sol';
+      return 'Sol';
+    }
+    
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toast-message');
+      const icon = toast.querySelector('i');
+      
+      toastMessage.textContent = message;
+      icon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+      
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+    // ========== PERFORMANCE OPTIMIZATIONS ==========
+    // Debounce scroll events
+    let scrollTimeout;
+    window.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        // Handle scroll-based operations
+      }, 100);
+    });
+    // Optimize resize events
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        // Handle resize operations
+      }, 250);
+    });
+
+    // ========== KEYBOARD SHORTCUTS ==========
+    document.addEventListener('keydown', (e) => {
+      // Toggle theme with Ctrl/Cmd + T
+      if ((e.ctrlKey || e.metaKey) && e.key === 't') {
+        e.preventDefault();
+        document.getElementById('themeToggle').click();
+      }
+      
+      // Copy Ethereum address with Ctrl/Cmd + E
+      if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+        e.preventDefault();
+        copyAddress(document.querySelector('.wallet-btn'), '0x38f.....7d64ff7');
+      }
+    });
+  </script>
+</body>
+</html>
